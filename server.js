@@ -1,9 +1,14 @@
+// require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const dns = require('dns');
+
+dns.setServers(["1.1.1.1","8.8.8.8"]);
+
 
 
 const app = express();
@@ -11,7 +16,7 @@ const PORT = 3002;
 
 
 app.use(cors());
-app.use(express.json()); // parse JSON body
+app.use(express.json()); 
 
 
 connectDB();

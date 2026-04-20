@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const Product = require('./models/Product');
 
-mongoose.connect('mongodb://127.0.0.1:27017/amazon')
+mongoose.connect('mongodb+srv://rajendraprasad1705_db_user:Rajendra123@amazon.67abvnn.mongodb.net/amazon')
   .then(async () => {
     console.log(' Connected to MongoDB (amazon db)');
     
