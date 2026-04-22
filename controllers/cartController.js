@@ -60,10 +60,17 @@ const addToCart = async (req, res) => {
 const getCart = async (req, res) => {
   try {
     const userId = "guest";
+
     const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.json({ products: [] });
+    }
+
     res.json(cart);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 };
 

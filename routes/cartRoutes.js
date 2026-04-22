@@ -7,23 +7,16 @@ const {
   clearCart
 } = require('../controllers/cartController');
 
-
 router.post('/', addToCart);
 
 router.post('/guest', addToCart);
 
-
+router.get('/', getCart);        // ✅ ADD THIS
 router.get('/guest', getCart);
-
-
 router.get('/:userId', getCart);
 
 router.post('/clear', clearCart);
 
-
 router.delete('/:productId', removeFromCart);
 
-router.delete('/:id', removeFromCart);
-
 module.exports = router;
-
