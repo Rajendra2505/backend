@@ -59,11 +59,11 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const { userId = 'guest' } = req.params;
+    const userId = "guest";
     const cart = await Cart.findOne({ userId });
-    res.json(cart || { products: [], totalItems: 0 });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json(cart);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
