@@ -6,7 +6,7 @@ const {
   getCart,
   removeFromCart,
   clearCart,
-  updateQuantity   // ✅ ADD THIS
+  updateQuantity
 } = require('../controllers/cartController');
 
 // ADD TO CART
