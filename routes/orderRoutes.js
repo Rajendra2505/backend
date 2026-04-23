@@ -11,10 +11,10 @@ const {
 
 const Order = require('../models/Order');
 
+// ✅ FIXED
+router.post('/', placeOrder);
 
-router.post('/checkout', placeOrder);
-
-
+// GET ALL ORDERS
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find();
@@ -24,16 +24,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-
+// GET USER ORDERS
 router.get('/:userId', getUserOrders);
 
-
+// UPDATE STATUS
 router.patch('/:id', updateOrderStatus);
 
-
+// DELETE ORDER
 router.delete('/:id', deleteOrder);
 
-
+// PAYMENT
 router.post('/payment', createPayment);
 
 module.exports = router;
