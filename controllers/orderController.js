@@ -1,3 +1,6 @@
+const generateInvoice = require("../utils/generateInvoice");
+const sendEmail = require("../utils/sendEmail");
+const path = require("path");
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const transporter = require("../config/email");
@@ -27,6 +30,20 @@ const placeOrder = async (req, res) => {
     });
 
     const savedOrder = await order.save();
+    const filePath = path.join(__dirname,`../invoice/${savedOrder._id}.pdf`);
+     
+    await generateInvoice(savedOrder,filePath);
+    await sendEmail(email,filePath);
+
+    res.json({
+      message:"order placed successfullu & invoice sent",
+      order :savedOrder
+    });
+  }catch(error){
+    console.error("order error:",error);
+    res.status(500).json({error:error.message});
+  }
+};
 
     
     const productsHtml = products.map(item => `
