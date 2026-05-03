@@ -30,18 +30,24 @@ const placeOrder = async (req, res) => {
 
     const savedOrder = await order.save();
 
-    const filePath = path.join(__dirname, `../invoices/${savedOrder._id}.pdf`);
-    await generateInvoice(savedOrder, filePath);
-    await sendEmail(email, filePath);
-
     if (userId !== "guest") {
       await Cart.findOneAndDelete({ userId });
     }
 
     res.status(201).json({
-      message: "Order placed successfully & invoice sent",
+      message: "Order placed successfully",
       orderId: savedOrder._id
     });
+
+    (async () => {
+      try {
+        const filePath = path.join(__dirname, `../invoices/${savedOrder._id}.pdf`);
+        await generateInvoice(savedOrder, filePath);
+        await sendEmail(email, filePath);
+      } catch (err) {
+        console.error("Invoice/Email error:", err);
+      }
+    })();
 
   } catch (error) {
     res.status(500).json({ error: error.message });
