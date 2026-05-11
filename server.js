@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const cartRoutes = require('./routes/cartRoutes');
-const dashboardRoutes = required("./routes/dashboardRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const dns = require('dns');
 
 dns.setServers(["1.1.1.1","8.8.8.8"]);
