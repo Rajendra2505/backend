@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const dashboardRoutes = required("./routes/dashboardRoutes");
 const dns = require('dns');
 
 dns.setServers(["1.1.1.1","8.8.8.8"]);
@@ -32,6 +33,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', require('./routes/orderRoutes'));
+app.use("/api/dashboard",dashboardRoutes);
 
 
 app.get('/', (req, res) => {
