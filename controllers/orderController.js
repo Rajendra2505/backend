@@ -65,20 +65,45 @@ const getUserOrders = async (req, res) => {
 };
 
 const updateOrderStatus = async (req, res) => {
+
   try {
+
     const { id } = req.params;
+
     const { status } = req.body;
 
     const order = await Order.findById(id);
-    if (!order) return res.status(404).json({ error: "Order not found" });
+
+    if (!order) {
+
+      return res.status(404).json({
+        error: "Order not found"
+      });
+    }
 
     order.status = status;
+
     await order.save();
+
+    try {
+
+      await sendEmail(
+        order.email,
+        `Order status updated to ${status}`
+      );
+
+    } catch (err) {
+
+      console.log("Status email error:", err);
+    }
 
     res.json(order);
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 

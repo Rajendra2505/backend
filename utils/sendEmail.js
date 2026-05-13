@@ -3,35 +3,46 @@ const fs = require("fs");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendEmail = async (email, filePath) => {
+const sendEmail = async (email, filePathOrMessage) => {
 
   try {
 
-    const pdfBuffer = fs.readFileSync(filePath);
-
-    await resend.emails.send({
+    let emailOptions = {
 
       from: "onboarding@resend.dev",
 
       to: email,
 
-      subject: "Amazon Order Invoice",
+      subject: "Amazon Order Update"
+    };
 
-      html: `
+    if (typeof filePathOrMessage === "string" &&
+        filePathOrMessage.endsWith(".pdf")) {
+
+      const pdfBuffer = fs.readFileSync(filePathOrMessage);
+
+      emailOptions.html = `
         <h2>Order Placed Successfully</h2>
-        <p>Your invoice PDF is attached.</p>
-      `,
+        <p>Your invoice is attached.</p>
+      `;
 
-      attachments: [
+      emailOptions.attachments = [
         {
           filename: "invoice.pdf",
           content: pdfBuffer
         }
-      ]
+      ];
 
-    });
+    } else {
 
-    console.log("Email sent successfully");
+      emailOptions.html = `
+        <h2>${filePathOrMessage}</h2>
+      `;
+    }
+
+    await resend.emails.send(emailOptions);
+
+    console.log("Email sent");
 
   } catch (error) {
 
