@@ -87,14 +87,36 @@ const updateOrderStatus = async (req, res) => {
 
     try {
 
-      await sendEmail(
-        order.email,
-        `Order status updated to ${status}`
+      const { Resend } = require("resend");
+
+      const resend = new Resend(
+        process.env.RESEND_API_KEY
       );
+
+      await resend.emails.send({
+
+        from: "onboarding@resend.dev",
+
+        to: order.email,
+
+        subject: "Amazon Order Status Update",
+
+        html: `
+          <h2>Order Status Updated</h2>
+
+          <p>Hello ${order.shippingAddress.fullName}</p>
+
+          <p>Your order status is now:</p>
+
+          <h3>${status}</h3>
+        `
+      });
+
+      console.log("Status email sent");
 
     } catch (err) {
 
-      console.log("Status email error:", err);
+      console.log("EMAIL ERROR:", err);
     }
 
     res.json(order);
